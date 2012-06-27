@@ -2,12 +2,9 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = '0.0'
-
-
 setup(
     name='collective.behavior.stock',
-    version=version,
+    version='0.0',
     description="Behavior of stock.",
     long_description=open("README.rst").read(),
     # Get more strings from
