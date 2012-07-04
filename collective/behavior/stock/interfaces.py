@@ -18,6 +18,6 @@ class IStock(Interface):
 
     reducible_quantity = Int(
         title=_(u'Maximum Reducible Quantity'),
-        description=_(u'This amount is the maximum limit quantity to reduce the stock at once. Keep this 0 if you do not need to set the limit.'),
-        default=0,
-        min=0)
+        description=_(u'This amount is the maximum limit quantity to reduce the stock at once.'),
+        default=100,
+        min=1)

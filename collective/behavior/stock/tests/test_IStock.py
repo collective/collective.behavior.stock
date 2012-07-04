@@ -66,14 +66,14 @@ class TestIStock(unittest.TestCase):
     def test_reducible_quantity__description(self):
         schema = self.get_schema('reducible_quantity')
         self.assertEqual(
-            schema.description, u'This amount is the maximum limit quantity to reduce the stock at once. Keep this 0 if you do not need to set the limit.')
+            schema.description, u'This amount is the maximum limit quantity to reduce the stock at once.')
 
     def test_reducible_quantity__default(self):
         schema = self.get_schema('reducible_quantity')
         self.assertEqual(
-            schema.default, 0)
+            schema.default, 100)
 
     def test_reducible_quantity__min(self):
         schema = self.get_schema('reducible_quantity')
         self.assertEqual(
-            schema.min, 0)
+            schema.min, 1)
