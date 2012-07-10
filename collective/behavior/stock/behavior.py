@@ -1,4 +1,6 @@
+from Products.CMFCore.utils import getToolByName
 from collective.behavior.stock.interfaces import IStock
+from collective.cart.stock.interfaces import IStock as IStockContent
 from plone.directives import form
 from rwproperty import getproperty
 from rwproperty import setproperty
@@ -13,6 +15,31 @@ logger = logging.getLogger(__name__)
 alsoProvides(IStock, form.IFormFieldProvider)
 
 
+class StockInt(object):
+
+    def __int__(self, context):
+        self.context = context
+        self.catalog = getToolByName(context, 'portal_catalog')
+
+    def __str__(self):
+        query = {
+            'path': {
+                'query': '/'.join(self.context.getPhysicalPath()),
+                'depth': 1,
+            },
+            'object_provides': IStockContent.__identifier__,
+            # Date...
+        }
+        return '2'
+
+
+    def __add__(self, value):
+        return value + 1
+
+
+
+
+
 class Stock(object):
     """
     """
@@ -20,39 +47,40 @@ class Stock(object):
 
     def __init__(self, context):
         self.context = context
+        # self.stock = StockInt(context)
 
-    @getproperty
-    def unlimited(self):
-        return getattr(self.context, 'unlimited', False)
+    # @getproperty
+    # def unlimited(self):
+    #     return getattr(self.context, 'unlimited', False)
 
-    @setproperty
-    def unlimited(self, value):
-        """Set unlimited as Boolean
+    # @setproperty
+    # def unlimited(self, value):
+    #     """Set unlimited as Boolean
 
-        :param value: True or False
-        :type value: bool
-        """
-        if value is not True:
-            if value is not False:
-                raise ValueError('Not Bool')
-        setattr(self.context, 'unlimited', value)
+    #     :param value: True or False
+    #     :type value: bool
+    #     """
+    #     if value is not True:
+    #         if value is not False:
+    #             raise ValueError('Not Bool')
+    #     setattr(self.context, 'unlimited', value)
 
-    @getproperty
-    def stock(self):
-        return getattr(self.context, 'stock', 0)
+    # @getproperty
+    # def stock(self):
+    #     return getattr(self.context, 'stock', 0)
 
-    @setproperty
-    def stock(self, value):
-        """Setting stock as Integer
+    # @setproperty
+    # def stock(self, value):
+    #     """Setting stock as Integer
 
-        :param value: Stock value such as 10.
-        :type value: int
-        """
-        if isinstance(value, int):
-            # Set stock
-            setattr(self.context, 'stock', value)
-        else:
-            raise ValueError('Not Integer')
+    #     :param value: Stock value such as 10.
+    #     :type value: int
+    #     """
+    #     if isinstance(value, int):
+    #         # Set stock
+    #         setattr(self.context, 'stock', value)
+    #     else:
+    #         raise ValueError('Not Integer')
 
     @getproperty
     def reducible_quantity(self):
