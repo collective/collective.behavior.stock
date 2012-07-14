@@ -15,74 +15,6 @@ logger = logging.getLogger(__name__)
 alsoProvides(IStock, form.IFormFieldProvider)
 
 
-class StockInt(int):
-
-    def __new__(cls, context):
-        catalog = getToolByName(context, 'portal_catalog')
-        query = {
-            'path': {
-                'query': '/'.join(context.getPhysicalPath()),
-                'depth': 1,
-            },
-            'object_provides': IStockContent.__identifier__,
-        }
-        integer = int.__new__(cls, sum([brain.stock for brain in catalog(query)]))
-        integer.context = context
-        integer._catalog = catalog
-        integer._base_query = query
-        return integer
-
-    def _query(self, sort_order='ascending'):
-        query = self._base_query.copy()
-        query['sort_on'] = 'created'
-        query['sort_order'] =  sort_order
-        return query
-
-    @property
-    def _stock(self):
-        return sum([brain.stock for brain in self._catalog(self._base_query)])
-
-    def __sub__(self, value):
-        brains = [brain for brain in self._catalog(self._query()) if brain.stock > 0]
-        if brains and sum([brain.stock for brain in brains]) >= value:
-            for brain in brains:
-                obj = brain.getObject()
-                if obj.stock >= value:
-                    obj.stock -= value
-                    modified(obj)
-                    break
-                else:
-                    value -= obj.stock
-                    obj.stock = 0
-                    modified(obj)
-            return self._stock
-        else:
-            raise ValueError('Not possible to reduce more than zero.')
-
-    def __add__(self, value):
-        brains = self._catalog(self._query(sort_order='descending'))
-        stock = sum([brain.stock for brain in brains])
-        max_stock = sum([brain.initial_stock for brain in brains])
-        if brains and value <= max_stock - stock:
-            if len(brains) > 1:
-                if brains[0].created < brains[1].created:
-                    brains = reversed([brain for brain in brains])
-            for brain in brains:
-                obj = brain.getObject()
-                if obj.initial_stock - obj.stock >= value:
-                    obj.stock += value
-                    modified(obj)
-                    break
-                else:
-                    value -= (obj.initial_stock - obj.stock)
-                    obj.stock = obj.initial_stock
-                    modified(obj)
-            return self._stock
-        else:
-            message = 'Not possible to add more than max stock: {}.'.format(max_stock)
-            raise ValueError(message)
-
-
 class Stock(object):
     """
     """
@@ -90,7 +22,6 @@ class Stock(object):
 
     def __init__(self, context):
         self.context = context
-        self.stock = StockInt(context)
 
     @getproperty
     def reducible_quantity(self):
@@ -108,3 +39,61 @@ class Stock(object):
             setattr(self.context, 'reducible_quantity', value)
         else:
             raise ValueError('Not Integer')
+
+    def _query(self, sort_order='ascending'):
+        return {
+            'path': {
+                'query': '/'.join(self.context.getPhysicalPath()),
+                'depth': 1,
+            },
+            'object_provides': IStockContent.__identifier__,
+            'sort_on': 'created',
+            'sort_order': sort_order,
+        }
+
+    @property
+    def stock(self):
+        catalog = getToolByName(self.context, 'portal_catalog')
+        return sum([brain.stock for brain in catalog(self._query())])
+
+    def sub_stock(self, value):
+        catalog = getToolByName(self.context, 'portal_catalog')
+        brains = [brain for brain in catalog(self._query()) if brain.stock > 0]
+        if brains and sum([brain.stock for brain in brains]) >= value:
+            for brain in brains:
+                obj = brain.getObject()
+                if obj.stock >= value:
+                    obj.stock -= value
+                    modified(obj)
+                    break
+                else:
+                    value -= obj.stock
+                    obj.stock = 0
+                    modified(obj)
+            return self.stock
+        else:
+            raise ValueError('Not possible to reduce more than zero.')
+
+    def add_stock(self, value):
+        catalog = getToolByName(self.context, 'portal_catalog')
+        brains = catalog(self._query(sort_order='descending'))
+        stock = sum([brain.stock for brain in brains])
+        max_stock = sum([brain.initial_stock for brain in brains])
+        if brains and value <= max_stock - stock:
+            if len(brains) > 1:
+                if brains[0].created < brains[1].created:
+                    brains = reversed([brain for brain in brains])
+            for brain in brains:
+                obj = brain.getObject()
+                if obj.initial_stock - obj.stock >= value:
+                    obj.stock += value
+                    modified(obj)
+                    break
+                else:
+                    value -= (obj.initial_stock - obj.stock)
+                    obj.stock = obj.initial_stock
+                    modified(obj)
+            return self.stock
+        else:
+            message = 'Not possible to add more than max stock: {}.'.format(max_stock)
+            raise ValueError(message)
