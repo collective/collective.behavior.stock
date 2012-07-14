@@ -28,7 +28,6 @@ setup(
         'five.grok',
         'hexagonit.testing',
         'plone.behavior',
-        # 'plone.directives.form',
         'rwproperty',
         'setuptools',],
     entry_points="""

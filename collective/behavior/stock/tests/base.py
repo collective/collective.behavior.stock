@@ -18,11 +18,15 @@ class BehaviorStockLayer(PloneSandboxLayer):
         import collective.behavior.stock
         self.loadZCML(package=collective.behavior.stock)
         z2.installProduct(app, 'collective.behavior.stock')
+        import collective.behavior.stock.tests.dexterity
+        self.loadZCML(package=collective.behavior.stock.tests.dexterity)
+
 
     def setUpPloneSite(self, portal):
         """Set up Plone."""
         # Install into Plone site using portal_setup
         self.applyProfile(portal, 'collective.behavior.stock:default')
+        self.applyProfile(portal, 'collective.behavior.stock.tests.dexterity:default')
 
     def tearDownZope(self, app):
         """Tear down Zope."""

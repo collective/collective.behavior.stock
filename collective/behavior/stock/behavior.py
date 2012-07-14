@@ -6,7 +6,7 @@ from rwproperty import getproperty
 from rwproperty import setproperty
 from zope.interface import alsoProvides
 from zope.interface import implements
-
+from zope.lifecycleevent import modified
 import logging
 
 logger = logging.getLogger(__name__)
@@ -15,29 +15,72 @@ logger = logging.getLogger(__name__)
 alsoProvides(IStock, form.IFormFieldProvider)
 
 
-class StockInt(object):
+class StockInt(int):
 
-    def __int__(self, context):
-        self.context = context
-        self.catalog = getToolByName(context, 'portal_catalog')
-
-    def __str__(self):
+    def __new__(cls, context):
+        catalog = getToolByName(context, 'portal_catalog')
         query = {
             'path': {
-                'query': '/'.join(self.context.getPhysicalPath()),
+                'query': '/'.join(context.getPhysicalPath()),
                 'depth': 1,
             },
             'object_provides': IStockContent.__identifier__,
-            # Date...
         }
-        return '2'
+        integer = int.__new__(cls, sum([brain.stock for brain in catalog(query)]))
+        integer.context = context
+        integer._catalog = catalog
+        integer._base_query = query
+        return integer
 
+    def _query(self, sort_order='ascending'):
+        query = self._base_query.copy()
+        query['sort_on'] = 'created'
+        query['sort_order'] =  sort_order
+        return query
+
+    @property
+    def _stock(self):
+        return sum([brain.stock for brain in self._catalog(self._base_query)])
+
+    def __sub__(self, value):
+        brains = [brain for brain in self._catalog(self._query()) if brain.stock > 0]
+        if brains and sum([brain.stock for brain in brains]) >= value:
+            for brain in brains:
+                obj = brain.getObject()
+                if obj.stock >= value:
+                    obj.stock -= value
+                    modified(obj)
+                    break
+                else:
+                    value -= obj.stock
+                    obj.stock = 0
+                    modified(obj)
+            return self._stock
+        else:
+            raise ValueError('Not possible to reduce more than zero.')
 
     def __add__(self, value):
-        return value + 1
-
-
-
+        brains = self._catalog(self._query(sort_order='descending'))
+        stock = sum([brain.stock for brain in brains])
+        max_stock = sum([brain.initial_stock for brain in brains])
+        if brains and value <= max_stock - stock:
+            if len(brains) > 1:
+                if brains[0].created < brains[1].created:
+                    brains = reversed([brain for brain in brains])
+            for brain in brains:
+                obj = brain.getObject()
+                if obj.initial_stock - obj.stock >= value:
+                    obj.stock += value
+                    modified(obj)
+                    break
+                else:
+                    value -= (obj.initial_stock - obj.stock)
+                    obj.stock = obj.initial_stock
+                    modified(obj)
+            return self._stock
+        else:
+            message = 'Not possible to add more than max stock: {}.'.format(max_stock)
+            raise ValueError(message)
 
 
 class Stock(object):
@@ -47,40 +90,7 @@ class Stock(object):
 
     def __init__(self, context):
         self.context = context
-        # self.stock = StockInt(context)
-
-    # @getproperty
-    # def unlimited(self):
-    #     return getattr(self.context, 'unlimited', False)
-
-    # @setproperty
-    # def unlimited(self, value):
-    #     """Set unlimited as Boolean
-
-    #     :param value: True or False
-    #     :type value: bool
-    #     """
-    #     if value is not True:
-    #         if value is not False:
-    #             raise ValueError('Not Bool')
-    #     setattr(self.context, 'unlimited', value)
-
-    # @getproperty
-    # def stock(self):
-    #     return getattr(self.context, 'stock', 0)
-
-    # @setproperty
-    # def stock(self, value):
-    #     """Setting stock as Integer
-
-    #     :param value: Stock value such as 10.
-    #     :type value: int
-    #     """
-    #     if isinstance(value, int):
-    #         # Set stock
-    #         setattr(self.context, 'stock', value)
-    #     else:
-    #         raise ValueError('Not Integer')
+        self.stock = StockInt(context)
 
     @getproperty
     def reducible_quantity(self):
