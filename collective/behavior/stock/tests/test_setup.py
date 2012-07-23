@@ -16,6 +16,14 @@ class TestSetup(IntegrationTestCase):
         installer = getToolByName(self.portal, 'portal_quickinstaller')
         self.assertTrue(installer.isProductInstalled('collective.cart.stock'))
 
+    def test_catalog__initial_stock(self):
+        catalog = getToolByName(self.portal, 'portal_catalog')
+        self.assertIn('initial_stock', catalog.schema())
+
+    def test_catalog__stock(self):
+        catalog = getToolByName(self.portal, 'portal_catalog')
+        self.assertIn('stock', catalog.schema())
+
     def test_metadata__version(self):
         setup = getToolByName(self.portal, 'portal_setup')
         self.assertEqual(setup.getVersionForProfile(
