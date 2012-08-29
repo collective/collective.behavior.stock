@@ -28,7 +28,6 @@ setup(
         'five.grok',
         'hexagonit.testing',
         'plone.behavior',
-        'rwproperty',
         'setuptools'],
     entry_points="""
     # -*- Entry points: -*-
