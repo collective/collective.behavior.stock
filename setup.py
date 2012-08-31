@@ -1,11 +1,18 @@
 from setuptools import find_packages
 from setuptools import setup
+import os
+
+
+long_description = (
+    open(os.path.join("collective", "behavior", "stock", "docs", "README.rst")).read() + "\n" +
+    open(os.path.join("collective", "behavior", "stock", "docs", "HISTORY.rst")).read() + "\n" +
+    open(os.path.join("collective", "behavior", "stock", "docs", "CONTRIBUTORS.rst")).read())
 
 
 setup(
     name='collective.behavior.stock',
     version='0.0',
-    description="Behavior of stock.",
+    description="Provides stock related behavior to dexterity content types.",
     long_description=open("README.rst").read(),
     classifiers=[
         "Framework :: Plone",

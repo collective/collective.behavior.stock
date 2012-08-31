@@ -2,14 +2,9 @@ from Products.CMFCore.utils import getToolByName
 from collective.behavior.stock.interfaces import IStock
 from collective.cart.stock.interfaces import IStock as IStockContent
 from plone.directives import form
-from rwproperty import getproperty
-from rwproperty import setproperty
 from zope.interface import alsoProvides
 from zope.interface import implements
 from zope.lifecycleevent import modified
-import logging
-
-logger = logging.getLogger(__name__)
 
 
 alsoProvides(IStock, form.IFormFieldProvider)
@@ -23,11 +18,11 @@ class Stock(object):
     def __init__(self, context):
         self.context = context
 
-    @getproperty
+    @property
     def reducible_quantity(self):
         return getattr(self.context, 'reducible_quantity', 0)
 
-    @setproperty
+    @reducible_quantity.setter
     def reducible_quantity(self, value):
         """Setting reducible_quantity as Integer
 
