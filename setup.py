@@ -11,7 +11,7 @@ long_description = (
 
 setup(
     name='collective.behavior.stock',
-    version='0.0',
+    version='0.1',
     description="Provides stock related behavior to dexterity content types.",
     long_description=long_description,
     classifiers=[
