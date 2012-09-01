@@ -52,10 +52,6 @@ class TestStock(IntegrationTestCase):
         instance = self.create_instance()
         self.assertEqual(instance.reducible_quantity, 0)
 
-    def set_reducible_quantity(self, instance, reducible_quantity):
-        """Setting reducible_quantity to instance."""
-        instance.reducible_quantity = reducible_quantity
-
     def test_instance__reducible_quantity__ValueError(self):
         """Raise ValueError when setting other than integer."""
         instance = self.create_instance()

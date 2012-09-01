@@ -3,7 +3,6 @@ from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
-from plone.testing import z2
 
 import unittest
 
@@ -17,10 +16,8 @@ class BehaviorStockLayer(PloneSandboxLayer):
         # Load ZCML
         import collective.behavior.stock
         self.loadZCML(package=collective.behavior.stock)
-        z2.installProduct(app, 'collective.behavior.stock')
         import collective.behavior.stock.tests.dexterity
         self.loadZCML(package=collective.behavior.stock.tests.dexterity)
-
 
     def setUpPloneSite(self, portal):
         """Set up Plone."""
@@ -30,7 +27,6 @@ class BehaviorStockLayer(PloneSandboxLayer):
 
     def tearDownZope(self, app):
         """Tear down Zope."""
-        z2.uninstallProduct(app, 'collective.behavior.stock')
 
 
 FIXTURE = BehaviorStockLayer()

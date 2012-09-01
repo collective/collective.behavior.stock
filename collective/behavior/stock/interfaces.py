@@ -15,8 +15,8 @@ class IStock(Interface):
 
     stock = Attribute('Sum of stocks')
 
-    def sub_stock(value):
+    def sub_stock(value):  # pragma: no cover
         """Decrease stock by value and return the result."""
 
-    def add_stock(value):
+    def add_stock(value):  # pragma: no cover
         """Add stock by value and return the result."""

@@ -13,7 +13,7 @@ setup(
     name='collective.behavior.stock',
     version='0.0',
     description="Provides stock related behavior to dexterity content types.",
-    long_description=open("README.rst").read(),
+    long_description=long_description,
     classifiers=[
         "Framework :: Plone",
         "Framework :: Plone :: 4.2",
