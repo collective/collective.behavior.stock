@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-0.2 (2012-09-XX)
+0.2 (2012-09-17)
 ================
 
 - Finnish translations added. [taito]
