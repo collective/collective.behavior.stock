@@ -16,9 +16,9 @@ msgstr ""
 
 #: ./interfaces.py:11
 msgid "Maximum Reducible Quantity"
-msgstr "Maksimi vähennettävä määrä"
+msgstr "Suurin mahdollinen kertaostosmäärä"
 
 #: ./interfaces.py:12
 msgid "The maximum quantity to be reduced at once."
-msgstr "Kerrallaan vähennettävä maksimi määrä."
+msgstr " "
 
