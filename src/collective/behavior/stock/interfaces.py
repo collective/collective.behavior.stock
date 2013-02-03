@@ -13,6 +13,7 @@ class IStock(Interface):
         default=100,
         min=1)
 
+    initial_stock = Attribute('Sum of initial stocks')
     stock = Attribute('Sum of stocks')
 
     def sub_stock(value):  # pragma: no cover

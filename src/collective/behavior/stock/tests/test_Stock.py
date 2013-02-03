@@ -105,6 +105,7 @@ class TestStock(IntegrationTestCase):
         folder = self.create_folder()
         self.create_stock(folder, 'stock1', 100)
         instance = self.create_instance(folder=folder)
+        self.assertEqual(instance.initial_stock, 100)
         self.assertEqual(instance.stock, 100)
 
     def test_instance__two_stocks(self):
@@ -112,6 +113,7 @@ class TestStock(IntegrationTestCase):
         self.create_stock(folder, 'stock1', 100)
         self.create_stock(folder, 'stock2', 50)
         instance = self.create_instance(folder=folder)
+        self.assertEqual(instance.initial_stock, 150)
         self.assertEqual(instance.stock, 150)
 
     def test_sub_stock__ValueError(self):
@@ -125,6 +127,8 @@ class TestStock(IntegrationTestCase):
         instance = self.create_instance(folder=folder)
         self.assertEqual(instance.sub_stock(20), 80)
         self.assertEqual(stock1.stock, 80)
+        self.assertEqual(instance.initial_stock, 100)
+        self.assertEqual(instance.stock, 80)
 
     def test_sub_stock_multiple_stock(self):
         folder = self.create_folder()

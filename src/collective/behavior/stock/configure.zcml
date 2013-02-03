@@ -7,7 +7,9 @@
   xmlns:plone="http://namespaces.plone.org/plone"
   xmlns="http://namespaces.zope.org/zope">
 
-  <includeDependencies package="." />
+  <include package="five.grok"/>
+  <include package="plone.behavior"/>
+  <include package="collective.cart.stock"/>
   <grok:grok package="." />
   <i18n:registerTranslations directory="locales" />
 

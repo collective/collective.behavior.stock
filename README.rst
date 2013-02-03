@@ -1,1 +1,1 @@
-See `collective/behavior/stock/docs/README.rst <https://github.com/collective/collective.behavior.stock/blob/master/collective/behavior/stock/docs/README.rst>`_
+See `src/collective/behavior/stock/docs/README.rst <https://github.com/collective/collective.behavior.stock/blob/master/src/collective/behavior/stock/docs/README.rst>`_

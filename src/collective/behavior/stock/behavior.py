@@ -47,6 +47,11 @@ class Stock(object):
         }
 
     @property
+    def initial_stock(self):
+        catalog = getToolByName(self.context, 'portal_catalog')
+        return sum([brain.initial_stock for brain in catalog(self._query())])
+
+    @property
     def stock(self):
         catalog = getToolByName(self.context, 'portal_catalog')
         return sum([brain.stock for brain in catalog(self._query())])
