@@ -1,6 +1,11 @@
 Change log
 ----------
 
+0.4 (2013-02-04)
+================
+
+- Update methods: sub_stock and add_stock to avoid ValueError. [taito]
+
 0.3 (2013-02-03)
 ================
 
