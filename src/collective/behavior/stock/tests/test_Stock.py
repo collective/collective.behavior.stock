@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from collective.behavior.stock.tests.base import IntegrationTestCase
 
+import mock
+
 
 class TestStock(IntegrationTestCase):
 
@@ -64,9 +66,11 @@ class TestStock(IntegrationTestCase):
         instance.reducible_quantity = reducible_quantity
         self.assertEqual(instance.context.reducible_quantity, reducible_quantity)
 
-    def test__query(self):
+    @mock.patch('collective.behavior.stock.behavior.getToolByName')
+    def test_stocks(self, getToolByName):
         instance = self.create_instance()
-        self.assertEqual(instance._query(), {
+        instance.stocks()
+        getToolByName().assert_called_with({
             'path': {
                 'query': '/plone/folder',
                 'depth': 1,
@@ -76,9 +80,11 @@ class TestStock(IntegrationTestCase):
             'sort_order': 'ascending',
         })
 
-    def test__query_descending(self):
+    @mock.patch('collective.behavior.stock.behavior.getToolByName')
+    def test_stocks_descending(self, getToolByName):
         instance = self.create_instance()
-        self.assertEqual(instance._query(sort_order='descending'), {
+        instance.stocks(sort_order='descending')
+        getToolByName().assert_called_with({
             'path': {
                 'query': '/plone/folder',
                 'depth': 1,

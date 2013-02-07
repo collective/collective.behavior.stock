@@ -16,6 +16,9 @@ class IStock(Interface):
     initial_stock = Attribute('Sum of initial stocks')
     stock = Attribute('Sum of stocks')
 
+    def stocks(sort_order='ascending'):  # pragma: no cover
+        """Returns catalog brains of stock."""
+
     def sub_stock(value):  # pragma: no cover
         """Decrease stock by value and return the real subtracted value."""
 

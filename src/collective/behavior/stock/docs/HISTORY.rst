@@ -1,6 +1,11 @@
 Change log
 ----------
 
+0.5 (2013-02-07)
+================
+
+- Added method: stocks which returns catalog brains of stocks. [taito]
+
 0.4 (2013-02-04)
 ================
 

@@ -35,8 +35,9 @@ class Stock(object):
         else:
             raise ValueError('Not Integer')
 
-    def _query(self, sort_order='ascending'):
-        return {
+    def stocks(self, sort_order='ascending'):
+        catalog = getToolByName(self.context, 'portal_catalog')
+        query = {
             'path': {
                 'query': '/'.join(self.context.getPhysicalPath()),
                 'depth': 1,
@@ -46,24 +47,22 @@ class Stock(object):
             'sort_order': sort_order,
         }
 
+        return catalog(query)
+
     @property
     def initial_stock(self):
-        catalog = getToolByName(self.context, 'portal_catalog')
-        return sum([brain.initial_stock for brain in catalog(self._query())])
+        return sum([brain.initial_stock for brain in self.stocks()])
 
     @property
     def stock(self):
-        catalog = getToolByName(self.context, 'portal_catalog')
-        return sum([brain.stock for brain in catalog(self._query())])
+        return sum([brain.stock for brain in self.stocks()])
 
     def sub_stock(self, value):
-        catalog = getToolByName(self.context, 'portal_catalog')
-        brains = [brain for brain in catalog(self._query()) if brain.stock > 0]
+        brains = [brain for brain in self.stocks() if brain.stock > 0]
         total = value
         if value > self.stock:
             total = self.stock
         value = total
-        # if brains and sum([brain.stock for brain in brains]) >= value:
         for brain in brains:
             obj = brain.getObject()
             if obj.stock >= value:
@@ -75,12 +74,9 @@ class Stock(object):
                 obj.stock = 0
                 modified(obj)
         return total
-        # else:
-        #     raise ValueError('Not possible to reduce more than zero.')
 
     def add_stock(self, value):
-        catalog = getToolByName(self.context, 'portal_catalog')
-        brains = catalog(self._query(sort_order='descending'))
+        brains = self.stocks(sort_order='descending')
         total = value
         if total >= self.initial_stock - self.stock:
             total = self.initial_stock - self.stock
