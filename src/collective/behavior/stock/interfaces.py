@@ -1,13 +1,13 @@
 from collective.behavior.stock import _
+from plone.supermodel.model import Schema
+from zope import schema
 from zope.interface import Attribute
-from zope.interface import Interface
-from zope.schema import Int
 
 
-class IStock(Interface):
+class IStock(Schema):
     """Interface for Stock behavior."""
 
-    reducible_quantity = Int(
+    reducible_quantity = schema.Int(
         title=_(u'Maximum Reducible Quantity'),
         description=_(u'The maximum quantity to be reduced at once.'),
         default=100,

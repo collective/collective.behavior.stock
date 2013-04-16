@@ -1,1 +1,21 @@
-See `src/collective/behavior/stock/docs/README.rst <https://github.com/collective/collective.behavior.stock/blob/master/src/collective/behavior/stock/docs/README.rst>`_
+=========================
+collective.behavior.stock
+=========================
+
+collective.behavior.stock provides stock related behavior to dexterity content types.
+
+Currently tested with
+---------------------
+
+* Plone-4.3 with Python-2.7.x [taito]
+
+Behavior
+--------
+
+The behavior can be added through the web or directly through the file system to the dexterity content type xml file like::
+
+  <property name="behaviors">
+    ...
+    <element value="collective.behavior.stock.interfaces.IStock" />
+    ...
+  </property>

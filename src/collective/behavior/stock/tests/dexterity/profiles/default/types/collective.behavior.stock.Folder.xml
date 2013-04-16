@@ -20,7 +20,7 @@
   </property>
 
   <!-- Schema, class and security -->
-  <property name="schema">collective.behavior.stock.tests.dexterity.folder.ICFolder</property>
+  <property name="schema">collective.behavior.stock.tests.dexterity.folder.ICFolderSchema</property>
   <property name="klass">plone.dexterity.content.Container</property>
   <property name="add_permission">collective.behavior.stock.AddFolder</property>
 

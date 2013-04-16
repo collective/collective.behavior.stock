@@ -5,9 +5,9 @@ import os
 
 
 long_description = (
-    open(os.path.join("src", "collective", "behavior", "stock", "docs", "README.rst")).read() + "\n" +
+    open(os.path.join("README.rst")).read() + "\n" +
     open(os.path.join("src", "collective", "behavior", "stock", "docs", "HISTORY.rst")).read() + "\n" +
-    open(os.path.join("src", "collective", "behavior", "stock", "docs", "CONTRIBUTORS.rst")).read())
+    open(os.path.join("src", "collective", "behavior", "stock", "docs", "CREDITS.rst")).read())
 
 
 setup(
@@ -17,7 +17,7 @@ setup(
     long_description=long_description,
     classifiers=[
         "Framework :: Plone",
-        "Framework :: Plone :: 4.2",
+        "Framework :: Plone :: 4.3",
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7"],
@@ -33,10 +33,9 @@ setup(
     zip_safe=False,
     install_requires=[
         'collective.cart.stock',
-        'five.grok',
-        'hexagonit.testing',
         'plone.behavior',
         'setuptools'],
+    extras_require={'test': ['mock', 'plone.app.dexterity', 'plone.app.testing']},
     entry_points="""
     # -*- Entry points: -*-
 

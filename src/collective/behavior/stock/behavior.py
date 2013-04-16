@@ -1,18 +1,18 @@
 from Products.CMFCore.utils import getToolByName
 from collective.behavior.stock.interfaces import IStock
 from collective.cart.stock.interfaces import IStock as IStockContent
-from plone.directives import form
+from plone.autoform.interfaces import IFormFieldProvider
 from zope.interface import alsoProvides
 from zope.interface import implements
 from zope.lifecycleevent import modified
 
 
-alsoProvides(IStock, form.IFormFieldProvider)
+alsoProvides(IStock, IFormFieldProvider)
 
 
 class Stock(object):
-    """
-    """
+    """Behavior to add stock field to content types"""
+
     implements(IStock)
 
     def __init__(self, context):
