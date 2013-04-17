@@ -1,20 +1,14 @@
-from collective.behavior.stock import _
-from plone.supermodel.model import Schema
-from zope import schema
-from zope.interface import Attribute
+from collective.behavior.stock.schema import StockSchema
 
 
-class IStock(Schema):
-    """Interface for Stock behavior."""
+class IStock(StockSchema):
+    """Interface for behavior: Stock"""
 
-    reducible_quantity = schema.Int(
-        title=_(u'Maximum Reducible Quantity'),
-        description=_(u'The maximum quantity to be reduced at once.'),
-        default=100,
-        min=1)
+    def initial_stock():  # pragma: no cover
+        """Sum of initial stocks"""
 
-    initial_stock = Attribute('Sum of initial stocks')
-    stock = Attribute('Sum of stocks')
+    def stock():  # pragma: no cover
+        """Sum of stocks"""
 
     def stocks(sort_order='ascending'):  # pragma: no cover
         """Returns catalog brains of stock."""

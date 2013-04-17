@@ -1,5 +1,10 @@
-Change log
-----------
+Changelog
+---------
+
+0.5.0.2 (2013-04-17)
+====================
+
+- Separated schema from attributes and methods. [taito]
 
 0.5.0.1 (2013-04-16)
 ====================

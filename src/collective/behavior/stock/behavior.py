@@ -49,19 +49,17 @@ class Stock(object):
 
         return catalog(query)
 
-    @property
     def initial_stock(self):
         return sum([brain.initial_stock for brain in self.stocks()])
 
-    @property
     def stock(self):
         return sum([brain.stock for brain in self.stocks()])
 
     def sub_stock(self, value):
         brains = [brain for brain in self.stocks() if brain.stock > 0]
         total = value
-        if value > self.stock:
-            total = self.stock
+        if value > self.stock():
+            total = self.stock()
         value = total
         for brain in brains:
             obj = brain.getObject()
@@ -78,8 +76,8 @@ class Stock(object):
     def add_stock(self, value):
         brains = self.stocks(sort_order='descending')
         total = value
-        if total >= self.initial_stock - self.stock:
-            total = self.initial_stock - self.stock
+        if total >= self.initial_stock() - self.stock():
+            total = self.initial_stock() - self.stock()
         value = total
         if len(brains) > 1:
             if brains[0].created < brains[1].created:
