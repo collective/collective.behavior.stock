@@ -76,7 +76,7 @@ class TestStock(IntegrationTestCase):
                 'depth': 1,
             },
             'object_provides': 'collective.cart.stock.interfaces.IStock',
-            'sort_on': 'created',
+            'sort_on': 'getObjPositionInParent',
             'sort_order': 'ascending',
         })
 
@@ -90,7 +90,7 @@ class TestStock(IntegrationTestCase):
                 'depth': 1,
             },
             'object_provides': 'collective.cart.stock.interfaces.IStock',
-            'sort_on': 'created',
+            'sort_on': 'getObjPositionInParent',
             'sort_order': 'descending',
         })
 

@@ -43,7 +43,7 @@ class Stock(object):
                 'depth': 1,
             },
             'object_provides': IStockContent.__identifier__,
-            'sort_on': 'created',
+            'sort_on': 'getObjPositionInParent',
             'sort_order': sort_order,
         }
 
