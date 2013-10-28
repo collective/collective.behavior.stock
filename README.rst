@@ -7,7 +7,7 @@ collective.behavior.stock provides stock related behavior to dexterity content t
 Currently tested with
 ---------------------
 
-* Plone-4.3 with Python-2.7.x [taito]
+* Plone-4.3.2 with Python-2.7.x [taito]
 
 Behavior
 --------
